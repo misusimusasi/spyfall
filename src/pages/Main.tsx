@@ -1,14 +1,30 @@
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import { Paper, Typography } from '@material-ui/core';
+import React, { FC, useState, useEffect } from 'react';
+import { Title, ButtonLink } from '../components';
+import { ActionsWrapper } from '../styled';
+import * as firebase from 'firebase/app';
+
+const playerId = localStorage.getItem('playerId');
+const lobbyId = localStorage.getItem('lobbyId');
 
 export const Main: FC = () => {
+    const [ isAbleToRejoin, setIsAbleToRejoin ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (playerId && lobbyId) {
+            firebase.database().ref('rooms/' + lobbyId).once('value').then(snap => {
+                snap.val() && (snap.val().process === 'game' || snap.val().process === 'prepare') && setIsAbleToRejoin(true)
+            })
+        }
+    }, []);
+    
     return (
-        <Paper className='main'>
-            <Typography variant="h1" component="div">S P Y F A L L</Typography>
-            <Button variant="contained" color="primary" component={Link} to="/create">Новая игра</Button>
-            <Button variant="contained" color="primary" component={Link} to="/join">Присоединиться</Button>
-        </Paper>
-    );
+        <>
+            <Title />
+            <ActionsWrapper>
+                <ButtonLink link="/create">New game</ButtonLink>
+                <ButtonLink link="/join">Join game</ButtonLink>
+                {/* {isAbleToRejoin && <ButtonLink link={`/lobby/${lobbyId}`}>Your last game still in progress. Rejoin</ButtonLink>} */}
+            </ActionsWrapper>
+        </>
+    )
 };

@@ -6,34 +6,6 @@
   height: 100vh;
 }
 
-.MuiPaper-root {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  height: 90%;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.MuiPaper-root .MuiButtonBase-root {
-  margin: 10px;
-}
-
-.MuiTypography-h1.MuiTypography-root {
-  margin: 20px 0;
-}
-
-.player {
-  margin: 15px;
-}
-
 .MuiContainer-maxWidthLg {
   display: flex;
   flex-wrap: wrap;

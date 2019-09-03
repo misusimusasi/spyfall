@@ -1,7 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
 import * as firebase from 'firebase/app';
 import { History } from 'history';
-import { Paper } from '@material-ui/core';
+import { Chip } from '@material-ui/core';
+import { PlayersList, Timer } from '../components';
+import moment from 'moment';
 
 interface GameProps {
     history: History;
@@ -10,8 +12,10 @@ interface GameProps {
 
 export const Game: FC<GameProps> = ({ history, match }) => {
     const [players, setPlayers] = useState([]);
+    const [time, setTime] = useState<string>('');
 
     useEffect(() => {
+        let interval: any;
         const DBref = firebase.database().ref('rooms/' + match.params.lobbyId);
         DBref.on('value', function(snapshot) {
             snapshot.val() && setPlayers(snapshot.val().players);
@@ -19,19 +23,23 @@ export const Game: FC<GameProps> = ({ history, match }) => {
                 history.push('/result/' + match.params.lobbyId);
             }
         });
+        DBref.once('value').then(snapshot => {
+            const endTime = snapshot.val().endTime;
+            interval = setInterval(() => {
+                setTime(moment(endTime - +moment()).format('mm.ss'))
+            }, 1000);
+        })
         return () => {
+            clearInterval(interval);
             DBref.off();
         };
     }, []);
 
     return (
-        <Paper className='game'>
-            Lobby id: {match.params.lobbyId}
-            <p>Players:</p>
-            {players &&
-                Object.keys(players).map((player, i) => {
-                    return <div key={i}>{player}</div>;
-                })}
-        </Paper>
+        <>
+            <Timer time={time} />
+            {/* <Chip label={"Код игры: " + match.params.lobbyId} variant="outlined" /> */}
+            <PlayersList players={players} />
+        </>
     );
 };

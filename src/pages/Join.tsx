@@ -1,7 +1,11 @@
 import React, { FC, useState } from 'react';
 import * as firebase from 'firebase/app';
 import { History } from 'history';
-import { Paper, Button, TextField, Typography } from '@material-ui/core';
+import { TextField, Container } from '@material-ui/core';
+import { Title, ButtonLink } from '../components';
+import { ActionsWrapper, Form, WrappedButton } from '../styled';
+
+import { API } from '../api/api';
 
 interface FormElements extends HTMLFormElement {
     playerId: HTMLInputElement;
@@ -25,15 +29,9 @@ export const Join: FC<JoinProps> = ({ history }) => {
             .once('value');
 
         if (lobby.val() && lobby.val().process === 'prepare') {
-            firebase
-                .database()
-                .ref('rooms/' + lobbyId + '/players')
-                .update({
-                    [playerId]: {
-                        spy: false,
-                    },
-                });
-
+            API.joinLobby(playerId, lobbyId);
+            localStorage.setItem('playerId', playerId);
+            localStorage.setItem('lobbyId', lobbyId);
             history.push('/lobby/' + lobbyId);
         } else {
             setError(true);
@@ -44,13 +42,18 @@ export const Join: FC<JoinProps> = ({ history }) => {
     };
 
     return (
-        <Paper className='join'>
-            <form onSubmit={joinLobby} autoComplete="off">
-                <Typography variant="h1" component="div">S P Y F A L L</Typography>
-                <TextField label="Player name" variant="outlined" name='playerId' id='playerId' margin="dense" required/>
-                <TextField label="Lobby id" variant="outlined" name='lobbyId' id='lobbyId' margin="dense" required error={isError} helperText={isError && "Лобби не существует"}/>
-                <Button variant="contained" color="primary" type="submit">Присоединиться</Button>
-            </form>
-        </Paper>
+        <>
+            <Title />
+            <ActionsWrapper>
+                <Form onSubmit={joinLobby} autoComplete="off">
+                    <TextField label="Player name" variant="outlined" name='playerId' id='playerId' margin="dense" required/>
+                    <TextField label="Lobby id" variant="outlined" name='lobbyId' id='lobbyId' margin="dense" required error={isError} helperText={isError && "Лобби не существует"}/>
+                    <Container>
+                        <WrappedButton variant="contained" color="primary" type="submit">Join</WrappedButton>
+                        <ButtonLink link='/'>Back</ButtonLink>
+                    </Container>
+                </Form>
+            </ActionsWrapper>
+        </>
     );
 };

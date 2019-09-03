@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
-import * as firebase from 'firebase/app';
+import React, { FC, useState } from 'react';
 import { History } from 'history';
-import TextField from '@material-ui/core/TextField';
-import { Button, Paper, Typography } from '@material-ui/core';
+import { TextField, Container } from '@material-ui/core';
+
+import { Title, ButtonLink } from '../components';
+import { Form, ActionsWrapper, WrappedButton } from '../styled';
+import { API } from '../api/api';
 
 interface FormElements extends HTMLFormElement {
     playerId: HTMLInputElement;
@@ -13,32 +15,33 @@ interface CreateProps {
 }
 
 export const Create: FC<CreateProps> = ({ history }) => {
-    const createLobby = (e: React.FormEvent<FormElements>) => {
+    const [ loading, setLoading ] = useState<boolean>(false);
+    
+    const createLobby = async (e: React.FormEvent<FormElements>) => {
+        setLoading(true);
         e.preventDefault();
+        const playerId = e.currentTarget.playerId.value;
+        const lobbyId = await API.createLobby(playerId);
 
-        const newLobbyId = Math.round(Math.random() * 10000);
-
-        firebase
-            .database()
-            .ref('rooms/' + newLobbyId)
-            .set({
-                roomId: newLobbyId,
-                players: {[e.currentTarget.playerId.value]: {
-                  spy: false,
-                }},
-                process: 'prepare',
-            });
-
-        history.push('/lobby/' + newLobbyId);
+        localStorage.setItem('playerId', playerId);
+        localStorage.setItem('lobbyId', lobbyId);
+        history.push('/lobby/' + lobbyId);
     };
 
     return (
-        <Paper className='create'>
-            <form onSubmit={createLobby} autoComplete="off">
-                <Typography variant="h1" component="div">S P Y F A L L</Typography>
-                <TextField label="Player name" variant="outlined" name='playerId' id='playerId' margin="dense"/>
-                <Button variant="contained" color="primary" type="submit">Создать</Button>
-            </form>
-        </Paper>
+        <>
+            <Title />
+            <ActionsWrapper>
+                <Form onSubmit={createLobby} autoComplete="off">
+                    <TextField label="Player name" variant="outlined" name='playerId' id='playerId' margin="dense" required />
+                    {loading || (
+                        <Container>
+                            <WrappedButton variant="contained" color="primary" type="submit">Create</WrappedButton>
+                            <ButtonLink link='/'>Back</ButtonLink>
+                        </Container>
+                    )}
+                </Form>
+            </ActionsWrapper>
+        </>
     );
 };
