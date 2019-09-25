@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import * as firebase from 'firebase/app';
 import { History } from 'history';
 import { CircularProgress } from '@material-ui/core';
-import { ButtonLink } from '../components';
+import { StyledLink } from '../styled';
 
 interface ResultProps {
     history: History;
@@ -36,7 +36,7 @@ export const Result: FC<ResultProps> = ({ history, match }) => {
             ) : (
                 <>
                     <div>Spy is ' + {spy}</div>
-                    <ButtonLink onClick={handleFinish} link="/">Finish the game</ButtonLink>
+                    <StyledLink onClick={handleFinish} to="/">Finish the game</StyledLink>
                 </>
             )
     );

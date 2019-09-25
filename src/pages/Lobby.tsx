@@ -2,8 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import * as firebase from 'firebase/app';
 import { History } from 'history';
 import { Chip, CircularProgress  } from '@material-ui/core';
-import { PlayersList } from '../components';
-import { WrappedButton } from '../styled';
+import { PlayersList, WrappedButton } from '../components';
 import { API } from '../api/api';
 
 interface LobbyProps {
@@ -57,7 +56,7 @@ export const Lobby: FC<LobbyProps> = ({ history, match }) => {
                     <>
                         <Chip label={'Код игры: ' + lobbyId} variant='outlined' />
                         <PlayersList players={players} />
-                        <WrappedButton onClick={handleStart} variant='contained' color='primary'>Start</WrappedButton>
+                        <WrappedButton onClick={handleStart}>Start</WrappedButton>
                     </>
                 )
             }

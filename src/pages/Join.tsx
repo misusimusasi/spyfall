@@ -2,8 +2,8 @@ import React, { FC, useState } from 'react';
 import * as firebase from 'firebase/app';
 import { History } from 'history';
 import { TextField, Container } from '@material-ui/core';
-import { Title, ButtonLink } from '../components';
-import { ActionsWrapper, Form, WrappedButton } from '../styled';
+import { Title, WrappedButton } from '../components';
+import { ActionsWrapper, Form, StyledLink } from '../styled';
 
 import { API } from '../api/api';
 
@@ -49,8 +49,8 @@ export const Join: FC<JoinProps> = ({ history }) => {
                     <TextField label="Player name" variant="outlined" name='playerId' id='playerId' margin="dense" required/>
                     <TextField label="Lobby id" variant="outlined" name='lobbyId' id='lobbyId' margin="dense" required error={isError} helperText={isError && "Лобби не существует"}/>
                     <Container>
-                        <WrappedButton variant="contained" color="primary" type="submit">Join</WrappedButton>
-                        <ButtonLink link='/'>Back</ButtonLink>
+                        <WrappedButton>Join</WrappedButton>
+                        <StyledLink to='/'>Back</StyledLink>
                     </Container>
                 </Form>
             </ActionsWrapper>

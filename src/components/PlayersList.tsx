@@ -11,13 +11,19 @@ const StyledChip = styled(Chip)`
     margin: 15px
 `
 
+const StyledContainer = styled(Container)`
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+`;
+
 export const PlayersList: FC<PlayersListProps> = ({ players }) => {
     return (
-        <Container>
+        <StyledContainer>
             {players &&
                 Object.keys(players).map((player, i) => {
                     return <StyledChip icon={<Icon>face</Icon>} key={i} label={player} />;
             })}
-        </Container>
+        </StyledContainer>
     )
 };

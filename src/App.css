@@ -2,16 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
-}
-
-.MuiContainer-maxWidthLg {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.MuiChip-outlined .MuiChip-label {
-  font-size: 1.3rem;
 }

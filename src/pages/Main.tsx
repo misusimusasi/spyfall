@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Title, ButtonLink } from '../components';
-import { ActionsWrapper } from '../styled';
+import { Title } from '../components';
+import { ActionsWrapper, StyledLink } from '../styled';
 import * as firebase from 'firebase/app';
 
 const playerId = localStorage.getItem('playerId');
@@ -21,8 +21,8 @@ export const Main: FC = () => {
         <>
             <Title />
             <ActionsWrapper>
-                <ButtonLink link="/create">New game</ButtonLink>
-                <ButtonLink link="/join">Join game</ButtonLink>
+                <StyledLink to="/create">New game</StyledLink>
+                <StyledLink to="/join">Join game</StyledLink>
                 {/* {isAbleToRejoin && <ButtonLink link={`/lobby/${lobbyId}`}>Your last game still in progress. Rejoin</ButtonLink>} */}
             </ActionsWrapper>
         </>

@@ -1,9 +1,8 @@
 import React, { FC, useState } from 'react';
 import { History } from 'history';
 import { TextField, Container } from '@material-ui/core';
-
-import { Title, ButtonLink } from '../components';
-import { Form, ActionsWrapper, WrappedButton } from '../styled';
+import { Title, WrappedButton } from '../components';
+import { Form, ActionsWrapper, StyledLink } from '../styled';
 import { API } from '../api/api';
 
 interface FormElements extends HTMLFormElement {
@@ -36,8 +35,8 @@ export const Create: FC<CreateProps> = ({ history }) => {
                     <TextField label="Player name" variant="outlined" name='playerId' id='playerId' margin="dense" required />
                     {loading || (
                         <Container>
-                            <WrappedButton variant="contained" color="primary" type="submit">Create</WrappedButton>
-                            <ButtonLink link='/'>Back</ButtonLink>
+                            <WrappedButton>Create</WrappedButton>
+                            <StyledLink to='/'>Back</StyledLink>
                         </Container>
                     )}
                 </Form>
